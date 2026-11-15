@@ -1,0 +1,338 @@
+<title>AI教育專員(測驗問題)資料題庫</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+@font-face{font-family:"Cubic 11";src:url(data:font/woff2;base64,__FONT__) format("woff2");font-display:swap}
+/* Layout: 仿客服工單系統。頂端固定列（首頁／深淺色），內容單欄，方正扁平，工單編號用等寬字。 */
+:root{
+  --bg:#eff1f3; --surface:#ffffff; --fg:#1a1d21; --muted:#5b626c; --line:#cdd2d9; --line2:#e3e6ea;
+  --accent:#b8400b; --accent-fg:#ffffff; --accent-soft:#fbe9df;
+  --good:#1b6e38; --good-soft:#e1f2e6; --bad:#b42318; --bad-soft:#fbe5e2; --note:#fff5d6; --note-fg:#6b4a00;
+  --font:"Cubic 11","俐方體11號","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --mono:"Cubic 11","俐方體11號",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121418; --surface:#1b1e24; --fg:#e6e8eb; --muted:#9aa1ab; --line:#363b45; --line2:#2a2e36;
+  --accent:#ff9055; --accent-fg:#1a0d04; --accent-soft:#3a2417;
+  --good:#6fd68f; --good-soft:#15341f; --bad:#ff9b92; --bad-soft:#431e1a; --note:#352b10; --note-fg:#eac36a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121418; --surface:#1b1e24; --fg:#e6e8eb; --muted:#9aa1ab; --line:#363b45; --line2:#2a2e36;
+  --accent:#ff9055; --accent-fg:#1a0d04; --accent-soft:#3a2417;
+  --good:#6fd68f; --good-soft:#15341f; --bad:#ff9b92; --bad-soft:#431e1a; --note:#352b10; --note-fg:#eac36a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.6;margin:0;font-synthesis:none;
+  padding-block:0 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--surface)}
+.wrap{max-width:720px;margin:0 auto}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+h1{font-size:24px;line-height:1.3;margin:28px 0 6px;font-weight:700}
+h2{font-size:16px;margin:0 0 10px;font-weight:700}
+p{margin:0 0 10px}
+.muted{color:var(--muted)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--surface);border-bottom:1px solid var(--line);
+  margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));
+  padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+.top .in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:8px;min-height:52px}
+.top .name{font-weight:700;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbtn{background:transparent;border:1px solid var(--line);border-radius:4px;padding:6px 14px;cursor:pointer;min-height:36px;font-size:16px;white-space:nowrap}
+.tbtn.home{border-color:var(--fg);font-weight:700}
+.tbtn.arm{background:var(--bad);border-color:var(--bad);color:#fff}
+.prog{height:3px;background:var(--line2)}
+.prog i{display:block;height:100%;background:var(--accent);width:0}
+.list{border:1px solid var(--line);border-radius:6px;background:var(--surface);overflow:hidden}
+.opt-row{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line2);padding:14px;cursor:pointer;min-height:56px}
+.opt-row:last-child{border-bottom:0}
+.opt-row:hover{background:var(--accent-soft)}
+.opt-row .dot{flex:none;width:18px;height:18px;border:2px solid var(--line);border-radius:50%;margin-top:4px}
+.opt-row[aria-pressed="true"]{background:var(--accent-soft)}
+.opt-row[aria-pressed="true"] .dot{border-color:var(--accent);background:radial-gradient(var(--accent) 45%,transparent 50%)}
+.opt-row b{display:block;line-height:1.4}
+.opt-row small{color:var(--muted);font-size:16px;line-height:1.5}
+.opt-row .n{margin-left:auto;font-family:var(--mono);font-size:16px;color:var(--muted);flex:none;padding-top:2px}
+.lab{font-size:16px;font-weight:700;color:var(--muted);margin:26px 0 8px;letter-spacing:.04em}
+select,textarea{width:100%;font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:11px 12px}
+select{min-height:46px}
+textarea{min-height:130px;resize:vertical;line-height:1.6}
+.seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{flex:1;min-height:44px;border:0;border-right:1px solid var(--line2);background:transparent;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg);font-weight:700}
+.btn{background:var(--accent);color:var(--accent-fg);border:0;border-radius:6px;padding:12px 24px;font-weight:700;cursor:pointer;min-height:48px}
+.btn.alt{background:transparent;color:var(--fg);border:1px solid var(--fg)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.fine{font-size:16px;color:var(--muted);margin-top:18px}
+.ticket{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin-top:16px}
+.thead{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;padding:10px 16px;border-bottom:1px solid var(--line2);font-size:16px;color:var(--muted)}
+.thead .id{font-family:var(--mono);color:var(--fg);font-weight:700}
+.tbody{padding:16px}
+.blk{border-left:3px solid var(--line);padding:2px 0 2px 14px;margin:0 0 16px;white-space:pre-wrap;overflow-wrap:anywhere}
+.blk.me{border-color:var(--accent)}
+.blk .who{display:block;font-size:16px;font-weight:700;color:var(--muted);margin-bottom:2px}
+.blk.me .who{color:var(--accent)}
+.internal{border:1px dashed var(--line);background:var(--note);color:var(--note-fg);border-radius:4px;padding:10px 14px;margin:0 0 16px;white-space:pre-wrap;overflow-wrap:anywhere}
+.internal .who{display:block;font-size:16px;font-weight:700;margin-bottom:2px}
+.q{font-weight:700;font-size:16px;line-height:1.5;margin:20px 0 12px;padding-top:16px;border-top:1px solid var(--line2)}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px;cursor:pointer;min-height:54px}
+.opt:hover:not(:disabled){border-color:var(--fg)}
+.opt em{flex:none;width:26px;height:26px;border:1px solid var(--line);border-radius:4px;font-style:normal;font-family:var(--mono);font-weight:700;display:grid;place-items:center;font-size:16px}
+.opt span{min-width:0;overflow-wrap:anywhere}
+.opt.ok{border-color:var(--good);background:var(--good-soft)}
+.opt.ok em{background:var(--good);border-color:var(--good);color:var(--good-soft)}
+.opt.no{border-color:var(--bad);background:var(--bad-soft)}
+.opt.no em{background:var(--bad);border-color:var(--bad);color:var(--bad-soft)}
+.opt:disabled{cursor:default;color:inherit}
+.fb{border-radius:6px;padding:12px 14px;margin-top:14px;white-space:pre-wrap}
+.fb.good{background:var(--good-soft)} .fb.bad{background:var(--bad-soft)}
+.fb b{display:block;margin-bottom:2px}
+.note{background:var(--note);color:var(--note-fg);border-radius:6px;padding:10px 14px;margin-top:10px;white-space:pre-wrap}
+.note b{display:block;font-size:16px}
+.kbd{font-size:16px;color:var(--muted);margin-top:12px}
+.rate{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:8px 0 0}
+.rate button{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 4px;cursor:pointer;min-height:58px;font-weight:700}
+.rate button small{display:block;font-weight:400;color:var(--muted);font-size:16px}
+.rate button:hover:not(:disabled){border-color:var(--fg)}
+.rate button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.rate button[aria-pressed="true"] small{color:inherit}
+.foot{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.big{font-family:var(--mono);font-size:48px;font-weight:700;line-height:1.1;margin:22px 0 4px}
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line2);vertical-align:middle}
+th{font-size:16px;color:var(--muted);font-weight:700}
+td.n,th.n{text-align:right;font-family:var(--mono);white-space:nowrap}
+.mini{display:block;height:6px;background:var(--line2);min-width:70px;border-radius:2px}
+.mini i{display:block;height:100%;background:var(--fg);border-radius:2px}
+.mini i.lo{background:var(--bad)}
+.tw{overflow-x:auto}
+.rv{padding:12px 0;border-bottom:1px solid var(--line2);font-size:16px}
+.rv:last-child{border-bottom:0}
+.rv .t{font-size:16px;color:var(--muted);margin-bottom:2px}
+.rv .a{background:var(--good-soft);border-radius:4px;padding:6px 10px;margin-top:6px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px;margin-top:16px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.kbd,.fine,.lab,.thead,.blk .who,.internal .who,.note b,.rv .t,.rate button small,.opt-row small,.opt-row .n,.tbtn,th,.fb b,label.muted{font-size:14px}
+.q{font-size:17px}
+</style>
+
+<header class="top">
+  <div class="in">
+    <span class="name" id="tname">客服新人情境測驗</span>
+    <button class="tbtn home" id="homeBtn" type="button">首頁</button>
+    <button class="tbtn" id="themeBtn" type="button">深／淺色</button>
+  </div>
+  <div class="prog" id="pbw" role="progressbar" aria-label="作答進度" hidden><i id="pb"></i></div>
+</header>
+
+<div class="wrap">
+  <section id="home">
+    <h1>電商客服情境測驗</h1>
+    <p class="muted">題目是顧客會真的傳來的訊息。先寫下你的做法，再看答案，最後知道差在哪裡。</p>
+
+    <div class="lab">題型</div>
+    <div class="list" id="modes"></div>
+
+    <div class="lab">範圍</div>
+    <label class="muted" for="topic" style="font-size:16px">主題</label>
+    <select id="topic"></select>
+    <div class="muted" id="cl" style="font-size:16px;margin:14px 0 4px">題數</div>
+    <div class="seg" id="count" role="group" aria-labelledby="cl"></div>
+
+    <div class="row"><button class="btn" id="start" type="button">開始測驗</button></div>
+    <p class="fine" id="hint"></p>
+    <p class="fine">示範題，不代表任何公司的政策。正式使用前請由主管依已核准的 SOP 審核答案。錯題本存在這台裝置的瀏覽器裡。</p>
+  </section>
+
+  <section id="quiz" hidden>
+    <div class="ticket" id="ticket"></div>
+  </section>
+
+  <section id="result" hidden></section>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+var D=JSON.parse(document.getElementById('data').textContent);
+var MODES=[
+ {k:'mcq',n:'最佳回覆選擇',d:'三個回覆選一個，選完立刻看解析',c:'100 題'},
+ {k:'short',n:'生活情境簡答',d:'先寫下做法，再對照參考答案自評',c:'500 題'},
+ {k:'multi',n:'多輪追問',d:'顧客追問或施壓時，你怎麼接',c:'100 題'},
+ {k:'wrong',n:'錯題本',d:'重做答錯或沒拿滿分的題目',c:''}
+];
+var COUNTS=[10,20,30,0];
+var $=function(i){return document.getElementById(i)};
+var mode='mcq',cnt=10,list=[],idx=0,res=[],cur=null,onKey=null,view='home';
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||'null');localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function wrongSet(){return store('wrong')||[]}
+function allItems(){return D.short.concat(D.mcq,D.multi)}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
+function setView(v){view=v;['home','quiz','result'].forEach(function(k){$(k).hidden=k!==v});
+  $('pbw').hidden=v!=='quiz';$('tname').textContent=v==='quiz'?'第 '+(idx+1)+' / '+list.length+' 題':'客服新人情境測驗';window.scrollTo({top:0})}
+
+function renderModes(){
+  var box=$('modes');box.innerHTML='';
+  MODES.forEach(function(m){
+    var b=el('button','opt-row');b.type='button';b.setAttribute('aria-pressed',String(m.k===mode));
+    var tx=el('div');tx.append(el('b',null,m.n),el('small',null,m.d));
+    b.append(el('span','dot'),tx,el('span','n',m.k==='wrong'?wrongSet().length+' 題':m.c));
+    b.onclick=function(){mode=m.k;renderModes();renderTopics()};box.append(b);
+  });
+}
+function renderCounts(){
+  var s=$('count');s.innerHTML='';
+  COUNTS.forEach(function(n){var b=el('button',null,n?n+' 題':'全部');b.type='button';b.setAttribute('aria-pressed',String(n===cnt));b.onclick=function(){cnt=n;renderCounts()};s.append(b)});
+}
+function pool(){
+  if(mode==='wrong'){var w=wrongSet();return allItems().filter(function(x){return w.indexOf(x.id)>-1})}
+  return D[mode];
+}
+function renderTopics(){
+  var sel=$('topic'),keep=sel.value;sel.innerHTML='';
+  var p=pool(),tp={};p.forEach(function(x){tp[x.topic]=(tp[x.topic]||0)+1});
+  var o=el('option',null,'全部主題（'+p.length+' 題）');o.value='';sel.append(o);
+  Object.keys(tp).forEach(function(k){var o=el('option',null,k+'（'+tp[k]+' 題）');o.value=k;sel.append(o)});
+  if(keep&&tp[keep])sel.value=keep;
+  $('hint').textContent=p.length?'':'錯題本是空的。答錯的題目會自動收進來。';
+  $('start').disabled=!p.length;
+}
+function begin(){
+  var p=pool(),t=$('topic').value;
+  if(t)p=p.filter(function(x){return x.topic===t});
+  list=shuffle(p);if(cnt>0)list=list.slice(0,cnt);
+  if(!list.length)return;
+  idx=0;res=[];setView('quiz');show();
+}
+$('start').onclick=begin;
+
+/* 首頁按鈕：測驗進行中要按兩次，避免誤觸 */
+var armT;
+function disarm(){clearTimeout(armT);$('homeBtn').classList.remove('arm');$('homeBtn').textContent='首頁'}
+function goHome(){disarm();onKey=null;renderModes();renderTopics();setView('home')}
+$('homeBtn').onclick=function(){
+  if(view==='quiz'&&!$('homeBtn').classList.contains('arm')){
+    $('homeBtn').classList.add('arm');$('homeBtn').textContent='再按一次離開';armT=setTimeout(disarm,3000);return}
+  goHome();
+};
+
+function who(cls,label,text){var d=el('div','blk '+cls);d.append(el('span','who',label),document.createTextNode(text));return d}
+function sceneBlock(item){
+  var s=item.scene;
+  if(s.indexOf('【內部】')===0){var n=el('div','internal');n.append(el('span','who','內部情況'),document.createTextNode(s.replace('【內部】','')));return n}
+  return who('','顧客',s.replace(/^顧客：/,''));
+}
+function show(){
+  cur=list[idx];var t=$('ticket');t.innerHTML='';disarm();
+  $('tname').textContent='第 '+(idx+1)+' / '+list.length+' 題';
+  $('pb').style.width=(idx/list.length*100)+'%';$('pbw').setAttribute('aria-valuenow',String(Math.round(idx/list.length*100)));
+  var h=el('div','thead');h.append(el('span','id','#'+cur.id),el('span',null,cur.topic+(cur.kind?' · '+cur.kind:'')));t.append(h);
+  var body=el('div','tbody');t.append(body);onKey=null;
+  body.append(sceneBlock(cur));
+  if(cur.t==='mcq')mcq(body);else if(cur.t==='short')short(body);else multi(body);
+  window.scrollTo({top:0});
+}
+function finish(score,max,miss){
+  res.push({item:cur,score:score,max:max});
+  var w=wrongSet();
+  if(miss){if(w.indexOf(cur.id)<0){w.push(cur.id);store('wrong',w)}}
+  else if(w.indexOf(cur.id)>-1){store('wrong',w.filter(function(x){return x!==cur.id}))}
+}
+function nextBtn(box){
+  var last=idx+1>=list.length;
+  var b=el('button','btn',last?'看結果':'下一題');b.type='button';
+  var go=function(){idx++;if(idx<list.length)show();else results()};
+  b.onclick=go;var f=el('div','foot');f.append(b);box.append(f);
+  b.focus({preventScroll:true});b.scrollIntoView({block:'nearest'});
+  var prev=onKey;onKey=function(e){if(e.key==='Enter'||e.key==='ArrowRight'){e.preventDefault();go();return true}return prev?prev(e):false};
+}
+function mcq(box){
+  box.append(el('div','q','哪一個回覆最適合？'));
+  var g=el('div','opts');var done=false,btns=[];
+  function pick(i){
+    if(done)return;done=true;
+    btns.forEach(function(c,j){c.disabled=true;if(j===cur.correct)c.classList.add('ok');else if(j===i)c.classList.add('no')});
+    var ok=i===cur.correct;
+    var a=el('div','fb '+(ok?'good':'bad'));a.append(el('b',null,ok?'答對':'答錯，正確答案是 '+'ABC'[cur.correct]),document.createTextNode(cur.explain));
+    box.append(a);
+    var f=el('div','note');f.append(el('b',null,'關鍵失誤'),document.createTextNode(cur.fail));box.append(f);
+    finish(ok?1:0,1,!ok);nextBtn(box);
+  }
+  cur.options.forEach(function(t,i){
+    var b=el('button','opt');b.type='button';b.append(el('em',null,'ABC'[i]),el('span',null,t));
+    b.onclick=function(){pick(i)};btns.push(b);g.append(b);
+  });
+  box.append(g);box.append(el('div','kbd','鍵盤：A、B、C 作答，Enter 下一題'));
+  onKey=function(e){var i='ABC'.indexOf(e.key.toUpperCase());if(i<0)i=['1','2','3'].indexOf(e.key);if(i>-1&&!done){pick(i);return true}return false};
+}
+function selfRate(box,q,ans,extra){
+  box.append(el('div','q',q));
+  var ta=el('textarea');ta.setAttribute('aria-label','你的回答');ta.placeholder='用自己的話寫下做法，不用很完整。';box.append(ta);
+  var f=el('div','foot');var sb=el('button','btn alt','看參考答案');sb.type='button';f.append(sb);box.append(f);
+  function reveal(){
+    if(sb.disabled)return;sb.disabled=true;ta.readOnly=true;ta.blur();
+    var a=el('div','fb good');a.append(el('b',null,'參考答案'),document.createTextNode(ans));box.append(a);
+    var n=el('div','note');n.append(el('b',null,extra[0]),document.createTextNode(extra[1]));box.append(n);
+    box.append(el('div','q','你答到多少？'));
+    var rate=el('div','rate');var rated=false;
+    function set(s,b){if(rated)return;rated=true;[].forEach.call(rate.children,function(c){c.disabled=true});b.setAttribute('aria-pressed','true');finish(s,2,s<2);nextBtn(box)}
+    [['0','沒答到'],['1','答到一部分'],['2','答到重點']].forEach(function(p){
+      var b=el('button');b.type='button';b.setAttribute('aria-pressed','false');b.append(document.createTextNode(p[0]+' 分'),el('small',null,p[1]));
+      b.onclick=function(){set(parseInt(p[0],10),b)};rate.append(b);
+    });
+    box.append(rate);
+    onKey=function(e){var s=['0','1','2'].indexOf(e.key);if(s>-1&&!rated){set(s,rate.children[s]);return true}return false};
+    rate.scrollIntoView({block:'nearest'});
+  }
+  sb.onclick=reveal;
+  ta.addEventListener('keydown',function(e){if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();reveal()}});
+  box.append(el('div','kbd','Ctrl＋Enter 看答案；自評時按 0、1、2'));
+}
+function short(box){selfRate(box,cur.prompt,cur.answer,['關鍵失誤',cur.fail])}
+function multi(box){
+  box.append(who('me','你的第一輪回覆',cur.reply));
+  box.append(who('','顧客再說',cur.follow));
+  selfRate(box,'面對這次追問，你怎麼回應？',cur.answer,['何時升級／關鍵失誤',cur.esc+'\n'+cur.fail]);
+}
+document.addEventListener('keydown',function(e){
+  if(view!=='quiz'||!onKey||e.metaKey||e.altKey||e.ctrlKey||e.target.tagName==='TEXTAREA')return;
+  onKey(e);
+});
+
+function results(){
+  setView('result');$('tname').textContent='測驗結果';var box=$('result');box.innerHTML='';
+  var got=0,max=0,by={};
+  res.forEach(function(r){got+=r.score;max+=r.max;var b=by[r.item.topic]=by[r.item.topic]||[0,0];b[0]+=r.score;b[1]+=r.max});
+  var pct=Math.round(got/max*100);
+  box.append(el('div','big',pct+'%'));
+  box.append(el('p',null,'得 '+got+' 分，滿分 '+max+'。'+(pct>=85?'判斷穩定，可以改做多輪追問。':pct>=65?'方向正確，回頭補沒拿滿分的題目。':'先看下面每題的判斷界線，再用錯題本重做。')));
+  var row=el('div','row');
+  var again=el('button','btn','再測一次');again.type='button';again.onclick=begin;
+  var home=el('button','btn alt','回首頁');home.type='button';home.onclick=goHome;row.append(again,home);box.append(row);
+
+  var keys=Object.keys(by);
+  if(keys.length>1){
+    var tp=el('div','panel');tp.append(el('h2',null,'各主題'));var tw=el('div','tw');var t=el('table');
+    var hr=el('tr');hr.append(el('th',null,'主題'),el('th',null,''),el('th','n','得分'));t.append(hr);
+    keys.forEach(function(k){var r=Math.round(by[k][0]/by[k][1]*100);var tr=el('tr');
+      var m=el('span','mini');var i=el('i',r<60?'lo':'');i.style.width=r+'%';m.append(i);var c=el('td');c.append(m);
+      tr.append(el('td',null,k),c,el('td','n',by[k][0]+' / '+by[k][1]));t.append(tr)});
+    tw.append(t);tp.append(tw);box.append(tp);
+  }
+  var miss=res.filter(function(r){return r.score<r.max});
+  var rp=el('div','panel');rp.append(el('h2',null,miss.length?'需要複習 '+miss.length+' 題（已加入錯題本）':'全部拿滿分'));
+  miss.forEach(function(r){
+    var d=el('div','rv');d.append(el('div','t','#'+r.item.id+' · '+r.item.topic+(r.item.kind?' · '+r.item.kind:'')));
+    d.append(el('div',null,r.item.scene.replace(/^顧客：|^【內部】/,'')));
+    if(r.item.prompt)d.append(el('div','muted','問題：'+r.item.prompt));
+    d.append(el('div','a','參考：'+(r.item.t==='mcq'?r.item.options[r.item.correct]:r.item.answer)));rp.append(d);
+  });
+  box.append(rp);
+}
+$('themeBtn').onclick=function(){
+  var d=document.documentElement,a=d.getAttribute('data-theme'),dark=a?a==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+  d.setAttribute('data-theme',dark?'light':'dark');
+};
+renderModes();renderCounts();renderTopics();setView('home');
+})();
+</script>
